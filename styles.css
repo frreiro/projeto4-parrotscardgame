@@ -18,7 +18,7 @@ main{
 
 }
 .cartas{    
-    width: 50%;
+    width: 75%;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -66,8 +66,4 @@ main{
 
   .virar-carta{
     transform: rotateY(-180deg);
-  }
-
-  .amarelo{
-      border:10px solid red;
   }
