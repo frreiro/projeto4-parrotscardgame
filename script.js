@@ -144,6 +144,7 @@ function virarCarta(elementoPai){
     elementoFilho[0].classList.add("virar-carta");
     elementoFilho[0].classList.add("back-face");
     elementoFilho[0].classList.remove("front-face");
+    elementoFilho[0].setAttribute('data-identifier','back-face');
     for(let i=0; i<quantidadeCartas; i++){
         if( cartaClicada === i ){
             elementoFilho[0].innerHTML =`<img src="Imagens/${gifs[i]}" alt="Papagaio"/>`
@@ -162,6 +163,8 @@ function desvirarAsCartas(){
             elemento[j].classList.remove('virar-carta');
             elemento[j].classList.remove('back-face');
             elemento[j].classList.add('front-face');
+            elemento[j].setAttribute('data-identifier','front-face');
+
             elemento[j].innerHTML = `<img src="Imagens/front.png" alt="Papagaio"/> `
         }    
     }
