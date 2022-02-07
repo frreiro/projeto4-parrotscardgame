@@ -16,8 +16,10 @@ let quantidadeCartas = prompt("Insira numeros pares de 4 a 14 para jogar");
 while((quantidadeCartas %2 !==0) || (quantidadeCartas < 4) || (quantidadeCartas > 14)){
     quantidadeCartas = prompt("Insira numeros pares de 4 a 14 para jogar");
 }
-console.log(`Numero de cartas é ${quantidadeCartas}`);
 
+/* ---- Começa o cronometro após escolher as cartas --- */ 
+let cronometro=0;
+let segundos = setInterval(contador,1000);
 
 /* --- Insere as quantidades de cartas no HTML --- */
 for(let i=0; i<quantidadeCartas; i++){
@@ -92,6 +94,9 @@ let contadorDeClicksGlobal = 0;
 // Vira duas cartas 
 function clicarCarta(divPai, id) {
 
+    
+
+
     identificarCarta = id;
     contadorDeClicks += 1;
     contadorDeClicksGlobal += 1;
@@ -164,7 +169,6 @@ function desvirarAsCartas(){
             elemento[j].classList.remove('back-face');
             elemento[j].classList.add('front-face');
             elemento[j].setAttribute('data-identifier','front-face');
-
             elemento[j].innerHTML = `<img src="Imagens/front.png" alt="Papagaio"/> `
         }    
     }
@@ -175,6 +179,12 @@ function desvirarAsCartas(){
 }
 
 function verificarSeGanhou(){
-    console.log('PARABÉNS !!! VOCÊ GANHOU');
-    alert(`Você ganhou em ${contadorDeClicksGlobal} jogadas!`)   
+    clearInterval(segundos);
+    alert(`Você ganhou em ${contadorDeClicksGlobal} jogadas! Em ${cronometro} segundos!`)   
+}
+
+function contador(){
+    cronometro += 1;
+    let elemento = document.querySelector(".tempo");
+    elemento.innerHTML = `Tempo: ${cronometro}s `
 }

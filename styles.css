@@ -1,10 +1,13 @@
 body{
     background-color: #eef9bf;
 }
-main{
+
+header{
+    height: 150px;
     display: flex;
-    flex-direction: column;
-    align-items: center;  
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 
 .titulo{
@@ -14,11 +17,27 @@ main{
     font-size: 56px;
     font-family: 'Roboto', sans-serif;
     color: #75B79E;
-    margin: 47px 00px
-
+    text-align: center;
 }
+
+.tempo{
+    font-size: 20px;
+    font-family: 'Roboto', sans-serif;
+    color: #75B79E;
+    position: absolute;
+    right: 20px;
+    bottom: 0;
+}
+
+main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;  
+    justify-content: center;
+}
+
 .cartas{    
-    width: 75%;
+    width: 70%;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -42,12 +61,6 @@ main{
     width: 100px;
     height: 100px;
 }
-
-/* .carta {
-    width: 117px;
-    height: 146px;
-    position: relative;
-  } */
 
   .face {
     width: 100%;
