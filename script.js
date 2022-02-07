@@ -26,7 +26,6 @@ for(let i=0; i<quantidadeCartas; i++){
     let classeCartas = document.querySelector(".cartas");
     classeCartas.innerHTML = classeCartas.innerHTML + `<div class="carta" onclick="clicarCarta(this,'carta${i}')" ><div class="front-face face" data-identifier="front-face"><img src="Imagens/front.png" alt="Papagaio"/></div></div>`
     nomeCartas [i] = "carta"+i; // Cria e add os nomes no array 
-    console.log("colocando as cartas....");
 }
 
 metadeQuantidadeCartas = quantidadeCartas / 2;
@@ -53,7 +52,6 @@ function identificarCartaClicada(){
     for(let i=0; i<quantidadeCartas; i++){
         if(identificarCarta === nomeCartas[i]){
             cartaClicada = valorDasCartasTotal[i];
-            console.log(cartaClicada);
             arrayCartasClicadas.push(valorDasCartasTotal[i])
         }
     }
@@ -94,9 +92,6 @@ let contadorDeClicksGlobal = 0;
 // Vira duas cartas 
 function clicarCarta(divPai, id) {
 
-    
-
-
     identificarCarta = id;
     contadorDeClicks += 1;
     contadorDeClicksGlobal += 1;
@@ -120,7 +115,6 @@ function clicarCarta(divPai, id) {
         
         // Acertou uma dupla
         if(leitorArrayDeCartasClicadas() === true){
-            console.log('ACERTOU UMA JOGADA');
             // add a classe 'selecionados' nas duas ultimas cartas selecionadas
             primeiroElemento.children[0].classList.add("selecionado");
             segundoElemento.children[0].classList.add("selecionado");
@@ -136,7 +130,6 @@ function clicarCarta(divPai, id) {
             
         }else if (leitorArrayDeCartasClicadas() === false) {
 
-            console.log('ERROU !! TENTE NOVAMENTE');
             setTimeout(desvirarAsCartas, 1000);
         }
     }else {
@@ -162,7 +155,6 @@ function virarCarta(elementoPai){
 // Desvira as cartas que não contem a classe 'selecionado'
 function desvirarAsCartas(){
     let elemento = document.querySelectorAll(".virar-carta");
-    console.log(elemento);
     for(let j=0; j<elemento.length; j++){
         if(!elemento[j].classList.contains("selecionado")){
             elemento[j].classList.remove('virar-carta');
