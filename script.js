@@ -22,7 +22,7 @@ console.log(`Numero de cartas é ${quantidadeCartas}`);
 /* --- Insere as quantidades de cartas no HTML --- */
 for(let i=0; i<quantidadeCartas; i++){
     let classeCartas = document.querySelector(".cartas");
-    classeCartas.innerHTML = classeCartas.innerHTML + `<div class="carta" onclick="changeImg(this,'carta${i}')"><div class="front-face face"><img src="Imagens/front.png" alt="Papagaio"/></div></div>`
+    classeCartas.innerHTML = classeCartas.innerHTML + `<div class="carta" onclick="clicarCarta(this,'carta${i}')" ><div class="front-face face" data-identifier="front-face"><img src="Imagens/front.png" alt="Papagaio"/></div></div>`
     nomeCartas [i] = "carta"+i; // Cria e add os nomes no array 
     console.log("colocando as cartas....");
 }
@@ -90,7 +90,7 @@ let contadorDePontos = 0;
 let contadorDeClicksGlobal = 0;
 
 // Vira duas cartas 
-function changeImg(divPai, id) {
+function clicarCarta(divPai, id) {
 
     identificarCarta = id;
     contadorDeClicks += 1;
@@ -139,13 +139,14 @@ function changeImg(divPai, id) {
     }
 }
 
-
 function virarCarta(elementoPai){
     const elementoFilho = elementoPai.children
     elementoFilho[0].classList.add("virar-carta");
+    elementoFilho[0].classList.add("back-face");
+    elementoFilho[0].classList.remove("front-face");
     for(let i=0; i<quantidadeCartas; i++){
         if( cartaClicada === i ){
-            elementoFilho[0].innerHTML = `<img src="Imagens/${gifs[i]}" alt="Papagaio"/> `
+            elementoFilho[0].innerHTML =`<img src="Imagens/${gifs[i]}" alt="Papagaio"/>`
         }
     }
 }
@@ -155,9 +156,12 @@ function virarCarta(elementoPai){
 // Desvira as cartas que não contem a classe 'selecionado'
 function desvirarAsCartas(){
     let elemento = document.querySelectorAll(".virar-carta");
+    console.log(elemento);
     for(let j=0; j<elemento.length; j++){
         if(!elemento[j].classList.contains("selecionado")){
             elemento[j].classList.remove('virar-carta');
+            elemento[j].classList.remove('back-face');
+            elemento[j].classList.add('front-face');
             elemento[j].innerHTML = `<img src="Imagens/front.png" alt="Papagaio"/> `
         }    
     }
