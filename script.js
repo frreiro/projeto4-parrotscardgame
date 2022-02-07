@@ -3,10 +3,9 @@ const gifs = ['bobrossparrot.gif','explodyparrot.gif','fiestaparrot.gif',
 gifs.sort(comparador); // Embaralha os gifs
 
 // os nomes das cartas entram nesse array
-const nomeCartas = [];
+// [carta0, carta1, ....] 
+const nomeCartas = []; 
 
-// valores das cartas entram nesse array
-const valorDasCartas= [];
 
 // cartas clicadas 
 let arrayCartasClicadas = [] // tem sempre dois elementos dentro dele só
@@ -28,30 +27,48 @@ for(let i=0; i<quantidadeCartas; i++){
     console.log("colocando as cartas....");
 }
 
-/* --- Coloca dentro do array os valores de cada carta --- */
 metadeQuantidadeCartas = quantidadeCartas / 2;
-for(let j=0; j<metadeQuantidadeCartas; j++){
-    valorDasCartas [j] = j;
+
+/* --- Coloca dentro de um array os valores das cartas
+    ex: 6 cartas no jogo seus valores serão:  
+    valorDasCartasTotal = [0, 1 , 2 , 0 , 1, 2] --- 
+        4 cartas no jogo seus valores serão:  
+    valorDasCartasTotal = [0, 1 , 0 , 1] --- */
+let valorDasCartasTotal = [];
+for(let k=0;k < 2; k++){
+    for (let m=0 ; m < metadeQuantidadeCartas; m++){
+        valorDasCartasTotal.push(m)
+    }
 }
 
 
-// /* --- Sincroniza cada carta com seu respectivo valor --- */
-// function identificarCartaClicada(divFilha){
-//     if(identificarCarta === nomeCartas[0]){console.log(valorDasCartas[0]); arrayCartasClicadas.push(valorDasCartas[0])}
-//     if(identificarCarta === nomeCartas[1]){console.log(valorDasCartas[1]); arrayCartasClicadas.push(valorDasCartas[1])}
+/* --- Sincroniza cada carta com seu respectivo valor
+        add no arrayCartasClicadas dois valores
+        ex: arrayCartasClicadas = [0 , 1]
+        ou arrayCartasClicadas = [ 1, 1 ], etc ----  */
+let cartaClicada = null;
+function identificarCartaClicada(){
+    for(let i=0; i<quantidadeCartas; i++){
+        if(identificarCarta === nomeCartas[i]){
+            cartaClicada = valorDasCartasTotal[i];
+            console.log(cartaClicada);
+            arrayCartasClicadas.push(valorDasCartasTotal[i])
+        }
+    }
 
-//     // if(identificarCarta === nomeCartas[0]|| identificarCarta === nomeCartas[1] ){divFilha[0].innerHTML = `<p>${valorDasCartas[0]}</p>`; console.log(valorDasCartas[0])}
-//     // if(identificarCarta === nomeCartas[2] || identificarCarta === nomeCartas[3] ){divFilha[0].innerHTML = `<img src="Imagens/${valorDasCartas[1]}" alt="Papagaio"/>`}
-//     // if(identificarCarta === nomeCartas[4] || identificarCarta === nomeCartas[5] ){divFilha[0].innerHTML = `<img src="Imagens/${valorDasCartas[2]}" alt="Papagaio"/>`}
-//     // if(identificarCarta === nomeCartas[6] || identificarCarta === nomeCartas[7] ){divFilha[0].innerHTML = `<img src="Imagens/${valorDasCartas[3]}" alt="Papagaio"/>`}
-//     // if(identificarCarta === nomeCartas[8] || identificarCarta === nomeCartas[9] ){divFilha[0].innerHTML = `<img src="Imagens/${valorDasCartas[4]}" alt="Papagaio"/>`}
-//     // if(identificarCarta === nomeCartas[10] || identificarCarta === nomeCartas[11] ){divFilha[0].innerHTML = `<img src="Imagens/${valorDasCartas[5]}" alt="Papagaio"/>`}
-//     // if(identificarCarta === nomeCartas[12] || identificarCarta === nomeCartas[13] ) {divFilha[0].innerHTML = `<img src="Imagens/${valorDasCartas[6]}" alt="Papagaio"/>`}
-// }
+}
+/* --- Ler se os pares dentro do array são iguais --- */
+function leitorArrayDeCartasClicadas(){
+    if(arrayCartasClicadas.length === 2 ){
+        if(arrayCartasClicadas[0] === arrayCartasClicadas[1]){
+            return true;
+        }else if (arrayCartasClicadas[0] !== arrayCartasClicadas[1]){
+            return false;
+        }
+    }
+}
 
-
-
-// cartas.sort(comparador); // Embaralha as cartas do array
+// valorDasCartas.sort(comparador); // Embaralha as cartas do array
 
 
 function comparador() { 
@@ -67,89 +84,90 @@ function comparador() {
 
 let identificarCarta = null;
 let contadorDeClicks = 0;
-
+let primeiroElemento = null;
+let segundoElemento = null;
+let contadorDePontos = 0;
+let contadorDeClicksGlobal = 0;
 
 // Vira duas cartas 
 function changeImg(divPai, id) {
+
     identificarCarta = id;
     contadorDeClicks += 1;
-    console.log("numero de clicks"+contadorDeClicks);
+    contadorDeClicksGlobal += 1;
 
-    const divFilha = divPai.children
-    // identificarCartaClicada(divFilha);
+
+    identificarCartaClicada();
+
     /* --- o clique vira apenas 2 cartas ---- */
     if(contadorDeClicks === 2){
-        divFilha[0].classList.add("virar-carta");
-        setTimeout(desvirarTodasAsCartas, 1000);
+        virarCarta(divPai);
+        segundoElemento = divPai;   
+
         
     }else if(contadorDeClicks < 2){
-        
-        divFilha[0].classList.add("virar-carta");
+        virarCarta(divPai);
+        primeiroElemento = divPai;
     }
 
-    console.log(arrayCartasClicadas)
+    /* --- Compara se não teve clique na mesma carta --- */
+    if( primeiroElemento !== segundoElemento){
+        
+        // Acertou uma dupla
+        if(leitorArrayDeCartasClicadas() === true){
+            console.log('ACERTOU UMA JOGADA');
+            // add a classe 'selecionados' nas duas ultimas cartas selecionadas
+            primeiroElemento.children[0].classList.add("selecionado");
+            segundoElemento.children[0].classList.add("selecionado");
+            
+            contadorDeClicks = 0;
+            arrayCartasClicadas = [];
+            primeiroElemento = null;
+            segundoElemento = null;
+            contadorDePontos += 1;
+            if(contadorDePontos === metadeQuantidadeCartas){
+                setTimeout(verificarSeGanhou,500);
+            }
+            
+        }else if (leitorArrayDeCartasClicadas() === false) {
+
+            console.log('ERROU !! TENTE NOVAMENTE');
+            setTimeout(desvirarAsCartas, 1000);
+        }
+    }else {
+        setTimeout(desvirarAsCartas, 1000);
+    }
+}
+
+
+function virarCarta(elementoPai){
+    const elementoFilho = elementoPai.children
+    elementoFilho[0].classList.add("virar-carta");
+    for(let i=0; i<quantidadeCartas; i++){
+        if( cartaClicada === i ){
+            elementoFilho[0].innerHTML = `<img src="Imagens/${gifs[i]}" alt="Papagaio"/> `
+        }
+    }
 }
 
 
 
-
-// Desvira todas as cartas
-function desvirarTodasAsCartas(){
-    let elemento = document.querySelectorAll(".face");
+// Desvira as cartas que não contem a classe 'selecionado'
+function desvirarAsCartas(){
+    let elemento = document.querySelectorAll(".virar-carta");
     for(let j=0; j<elemento.length; j++){
-        elemento[j].classList.remove('virar-carta');
-        // elemento[j].innerHTML =`<img src="Imagens/front.png" alt="Papagaio"/> `
+        if(!elemento[j].classList.contains("selecionado")){
+            elemento[j].classList.remove('virar-carta');
+            elemento[j].innerHTML = `<img src="Imagens/front.png" alt="Papagaio"/> `
+        }    
     }
     contadorDeClicks = 0;
     arrayCartasClicadas = []; // Recomeça o array;
+    primeiroElemento = null;
+    segundoElemento = null;
 }
 
-
-function verificarIgualdade(){
+function verificarSeGanhou(){
+    console.log('PARABÉNS !!! VOCÊ GANHOU');
+    alert(`Você ganhou em ${contadorDeClicksGlobal} jogadas!`)   
 }
-
-// function changeImg (divPai, id){
-//     identificarCarta = id; //passar o nome a ser comparado na função atribuirNumeroACarta();
-//     // contarCartasCertas()
-
-//     const divFilha = divPai.children; // console.log(divFilha[0]); // Div da carta
-
-//     divFilha[0].classList.add("virar-carta");
-//     if(divFilha[0].classList.contains("virar-carta")){
-//         // Carta Virada
-//         // atribuirNumeroACarta(divFilha);
-//         contadorDeClicks += 1;
-//     }
-//     // else{
-//     //     // Carta Desvirada
-
-//     //     divFilha[0].innerHTML =`
-//     //    <img src="Imagens/front.png" alt="Papagaio"/>
-//     //     `
-//     //     contadorDeClicks -= 1;
-//     // }
-//     if(contadorDeClicks === 2){
- 
-//         setTimeout(desvirarTodasAsCartas, 1000);
-//     }
-//     console.log(contadorDeClicks);
-// } 
-
-// function atribuirNumeroACarta(divEscolhida){
-
-//     if(identificarCarta === nomeCartas[0]|| identificarCarta === nomeCartas[1] ){ divEscolhida[0].innerHTML = `<img src="Imagens/${gifs[0]}" alt="Papagaio"/>`}
-//     if(identificarCarta === nomeCartas[2] || identificarCarta === nomeCartas[3] ){ divEscolhida[0].innerHTML = `<img src="Imagens/${gifs[1]}" alt="Papagaio"/>` }
-//     if(identificarCarta === nomeCartas[4] || identificarCarta === nomeCartas[5] ){ divEscolhida[0].innerHTML = `<img src="Imagens/${gifs[2]}" alt="Papagaio"/>` }
-//     if(identificarCarta === nomeCartas[6] || identificarCarta === nomeCartas[7] ){ divEscolhida[0].innerHTML = `<img src="Imagens/${gifs[3]}" alt="Papagaio"/>` }
-//     if(identificarCarta === nomeCartas[8] || identificarCarta === nomeCartas[9] ){ divEscolhida[0].innerHTML = `<img src="Imagens/${gifs[4]}" alt="Papagaio"/>` }
-//     if(identificarCarta === nomeCartas[10] || identificarCarta === nomeCartas[11] ){ divEscolhida[0].innerHTML = `<img src="Imagens/${gifs[5]}" alt="Papagaio"/>` }
-//     if(identificarCarta === nomeCartas[12] || identificarCarta === nomeCartas[13] ){ divEscolhida[0].innerHTML = `<img src="Imagens/${gifs[6]}" alt="Papagaio"/>` }
-// }
-
-// const cartasClicadas = [];
-// function contarCartasCertas(){
-//     console.log(identificarCarta);
-//     cartasClicadas.push(identificarCarta);
-//     if( identificarCarta === cartas[0]|| identificarCarta === cartas[1])
-
-//     console.log(cartasClicadas);}
